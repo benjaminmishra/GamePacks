@@ -1,0 +1,49 @@
+x-database-details: &DATABASE_DETAILS
+  Database__Host: gamepacks-dbserver
+  Database__Port: 5432
+  Database__Name: gamespacks-db
+  Database__User: postgress
+  Database__Password: mypassword123!
+
+services:
+  gamepacks-service:
+    build:
+      context: .
+      dockerfile: ./GamePacks.Service/Dockerfile
+    environment:
+      <<: *DATABASE_DETAILS
+    networks:
+      - gamepacks-service-network
+    ports:
+      - "3000:5049"
+    depends_on:
+      - gamepacks-migration-runner
+  
+  gamepacks-migration-runner:
+    build:
+      context: .
+      dockerfile: ./GamePacks.Migrations.Runner/Dockerfile
+    environment:
+      <<: *DATABASE_DETAILS
+    networks:
+      - gamepacks-service-network
+    depends_on:
+      - gamepacks-dbserver
+    restart: on-failure
+      
+      
+  gamepacks-dbserver:
+    image: postgres:16  
+    environment:
+      POSTGRES_USER: postgress
+      POSTGRES_PASSWORD: mypassword123!
+    ports:
+      - "5433:5432"
+    networks:
+      - gamepacks-service-network
+    restart: always
+        
+        
+networks:
+  gamepacks-service-network:
+    driver: bridge
