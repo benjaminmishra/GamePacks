@@ -1,6 +1,6 @@
 using System;
 
-namespace GamePacks.Service.Models;
+namespace GamePacks.DataAccess.Models;
 
 public class Pack
 {
@@ -9,6 +9,7 @@ public class Pack
     public required string ShortName {get;set;}
     public long Price {get;set;}
     public bool IsActive {get;set;}
-    public PackItem[]? PackItems {get;set;}
     public Pack? ParentPack {get;set;}
+    public ICollection<PackItem>? PackItems {get;set;}
+    public ICollection<Pack> ChildPacks {get;set;} = new List<Pack>();
 }

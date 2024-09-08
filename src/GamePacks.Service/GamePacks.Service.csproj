@@ -9,14 +9,25 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+  <PrivateAssets>all</PrivateAssets>
+  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+</PackageReference>
+<PackageReference Include="OneOf" Version="3.0.271"/>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataAccess/" />
     <Folder Include="Endpoints/" />
+    <Folder Include="Models/" />
+    <Folder Include="Models/Requests/" />
+    <Folder Include="Models/Responses/" />
     <Folder Include="UseCases/" />
     <Folder Include="UseCases/Commands/" />
     <Folder Include="UseCases/Queries/" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\GamePacks.DataAccess\GamePacks.DataAccess.csproj" />
+    <ProjectReference Include="..\GamePacks.Migrations\GamePacks.Migrations.csproj" />
+  </ItemGroup>
 </Project>

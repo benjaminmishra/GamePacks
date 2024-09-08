@@ -1,6 +1,14 @@
-@GamePacks.Service_HostAddress = http://localhost:5258
+@GamePacks_Service_HostAddress = http://localhost:3000
 
-GET {{GamePacks.Service_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{GamePacks_Service_HostAddress}}/api/v1/packs
+Content-Type: application/json
+
+{
+  "packName": "The School Pack",
+  "active": true,
+  "price": 10,
+  "content": ["furniture.whiteboard"],
+  "childPackIds": ["pack.classroom", "pack.playground"]
+}
 
 ###
