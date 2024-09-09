@@ -18,6 +18,8 @@ public static class ServiceCollectionExtentions
             options.UseNpgsql(dbSettings.ConnectionString,b => b.MigrationsAssembly("GamePacks.Migrations"));
         });
 
+        services.AddScoped<IPackRepository, PackRepository>();
+
         return services;
     }
 }

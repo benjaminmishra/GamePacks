@@ -1,4 +1,4 @@
-namespace GamePacks.Service.Endpoints;
+namespace GamePacks.Service.Models;
 
 public class GetPackByIdResponse
 {

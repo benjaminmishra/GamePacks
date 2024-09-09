@@ -1,5 +1,5 @@
 using GamePacks.DataAccess.Models;
-using GamePacks.Service.Endpoints;
+using GamePacks.Service.Models;
 using GamePacks.DataAccess;
 using OneOf;
 using OneOf.Types;
@@ -14,7 +14,7 @@ public class CreatePackCommandHandler
         _packRepository = packRepository;
     }
 
-    public async Task<OneOf<Pack,Error>> ExecuteAsync(CreatePackRequest command)
+    public async Task<OneOf<Pack,PackError>> ExecuteAsync(CreatePackRequest command)
     {
         var newPack = new Pack {
             Name = command.PackName,
@@ -23,6 +23,14 @@ public class CreatePackCommandHandler
             Price = command.Price,
         };
 
-        return await _packRepository.AddPackAsync(newPack);
+        try 
+        {
+            var addedPack = await _packRepository.AddPackAsync(newPack);
+            return addedPack;
+        }
+        catch (Exception ex) 
+        {
+            return new PackExceptionError(ex);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using GamePacks.Service.UseCases;
+using GamePacks.Service.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,9 +31,9 @@ public static class CreatePackEndpoint
              error =>
              {
                  return TypedResults.Problem(
-                     detail: error.ToString(),
-                     statusCode: 500,
-                     title: "Unexpected error creating pack");
+                  detail: error.Message,
+                  statusCode: 500,
+                  title: "Unexpected error creating pack");
              }
          );
     }

@@ -1,4 +1,5 @@
 using GamePacks.Service.UseCases;
+using GamePacks.Service.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,20 +22,28 @@ public static class GetAllPacksEndpoint
     {
         var result = await queryHandler.ExecuteAsync();
 
-       return result.Match<Results<Ok<GetAllPacksResponse>, ProblemHttpResult>>(
-            packs => 
-            {
-                var allPackNames = packs.Select(p => p.Name);
+        return result.Match<Results<Ok<GetAllPacksResponse>, ProblemHttpResult>>(
+             packs =>
+             {
+                 var allPackNames = packs.Select(p => p.Name);
 
-                return TypedResults.Ok(new GetAllPacksResponse{ AllPackNames = allPackNames});
-            },
-            error => 
-            {
-                return TypedResults.Problem(
-                    detail: error.ToString(),
-                    statusCode: 500, 
-                    title: "Unexpected error getting pack");
-            }
-        );
+                 return TypedResults.Ok(new GetAllPacksResponse { AllPackNames = allPackNames });
+             },
+             error =>
+             {
+                 if (error is PackNotFoundError)
+                 {
+                     return TypedResults.Problem(
+                         detail: error.Message,
+                         statusCode: 404,
+                         title: "No packs found");
+                 }
+
+                 return TypedResults.Problem(
+                     detail: error.Message,
+                     statusCode: 500,
+                     title: "Unexpected error getting pack");
+             }
+         );
     }
 }
