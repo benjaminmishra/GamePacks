@@ -8,6 +8,8 @@ public static class Routes
 
         // Map all routes
         group.MapCreatePackEndpoint();
+        group.MapGetPackByIdEndpoint();
+        group.MapGetAllPacksEndpoint();
 
         return group;
     }

@@ -17,23 +17,23 @@ public static class CreatePackEndpoint
     }
 
     public static async Task<Results<Ok<CreatePackResponse>, ProblemHttpResult>> HandleAsync(
-        CreatePackRequest request, 
+        [FromBody] CreatePackRequest request,
         [FromServices] CreatePackCommandHandler commandHandler)
     {
         var result = await commandHandler.ExecuteAsync(request);
 
-       return result.Match<Results<Ok<CreatePackResponse>, ProblemHttpResult>>(
-            pack => 
-            {
-                return TypedResults.Ok(new CreatePackResponse());
-            },
-            error => 
-            {
-                return TypedResults.Problem(
-                    detail: error.ToString(),
-                    statusCode: 500, 
-                    title: "Unexpected error creating pack");
-            }
-        );
+        return result.Match<Results<Ok<CreatePackResponse>, ProblemHttpResult>>(
+             pack =>
+             {
+                 return TypedResults.Ok(new CreatePackResponse());
+             },
+             error =>
+             {
+                 return TypedResults.Problem(
+                     detail: error.ToString(),
+                     statusCode: 500,
+                     title: "Unexpected error creating pack");
+             }
+         );
     }
 }

@@ -13,6 +13,8 @@ builder.Services.ConfigureDataAccessServices(
     options => builder.Configuration.GetSection(GamePacksDatabaseOptions.ConfigSection).Bind(options));
 
 builder.Services.AddScoped<CreatePackCommandHandler>();
+builder.Services.AddScoped<GetPackByIdQueryHandler>();
+builder.Services.AddScoped<GetAllPacksQueryHandler>();
 
 var app = builder.Build();
 

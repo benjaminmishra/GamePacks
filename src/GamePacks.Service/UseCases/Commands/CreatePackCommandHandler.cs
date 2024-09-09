@@ -1,6 +1,6 @@
 using GamePacks.DataAccess.Models;
 using GamePacks.Service.Endpoints;
-using GamePacks.Service.Interfaces;
+using GamePacks.DataAccess;
 using OneOf;
 using OneOf.Types;
 

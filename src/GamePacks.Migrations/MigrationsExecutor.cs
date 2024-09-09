@@ -1,10 +1,9 @@
-using System.Runtime.CompilerServices;
 using GamePacks.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 namespace GamePacks.Migrations;
 
-public sealed class MigrationsExecutor : IDisposable
+public sealed class MigrationsExecutor
 {
     private readonly GamePacksDbContext _gamePacksDbContext;
 
@@ -13,13 +12,8 @@ public sealed class MigrationsExecutor : IDisposable
         _gamePacksDbContext = gamePacksDbContext;
     }
 
-    public void Execute()
+    public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        _gamePacksDbContext.Database.Migrate();
-    }
-
-    public void Dispose()
-    {
-        _gamePacksDbContext.Dispose();
+        await _gamePacksDbContext.Database.MigrateAsync(cancellationToken);
     }
 }
