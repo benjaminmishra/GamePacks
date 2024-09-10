@@ -1,13 +1,10 @@
-using GamePacks.Service;
-using GamePacks.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace GamePacks.DataAccess;
 
-public static class ServiceCollectionExtentions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureDataAccessServices(this IServiceCollection services, Action<GamePacksDatabaseOptions> configAction)
     {
@@ -15,7 +12,7 @@ public static class ServiceCollectionExtentions
         services.AddDbContext<GamePacksDbContext>((serviceProvider, options) =>
         {
             var dbSettings = serviceProvider.GetRequiredService<IOptions<GamePacksDatabaseOptions>>().Value;
-            options.UseNpgsql(dbSettings.ConnectionString,b => b.MigrationsAssembly("GamePacks.Migrations"));
+            options.UseNpgsql(dbSettings.ConnectionString, b => b.MigrationsAssembly("GamePacks.Migrations"));
         });
 
         services.AddScoped<IPackRepository, PackRepository>();

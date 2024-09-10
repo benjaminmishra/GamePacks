@@ -2,6 +2,8 @@ using GamePacks.DataAccess;
 using GamePacks.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
+namespace GamePacks.Migrations;
+
 public class DataSeeder
 {
     private readonly GamePacksDbContext _gamePacksDbContext;

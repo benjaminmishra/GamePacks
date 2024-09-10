@@ -1,10 +1,11 @@
-using GamePacks.DataAccess.Models;
-using GamePacks.Service.Models;
 using GamePacks.DataAccess;
+using GamePacks.DataAccess.Models;
+using GamePacks.Service.Models.Errors;
+using GamePacks.Service.Models.Requests;
 using OneOf;
 using OneOf.Types;
 
-namespace GamePacks.Service.UseCases;
+namespace GamePacks.Service.UseCases.Commands;
 
 public class CreatePackCommandHandler
 {
@@ -17,8 +18,8 @@ public class CreatePackCommandHandler
 
     public async Task<OneOf<Pack, PackError>> ExecuteAsync(CreatePackRequest command, CancellationToken cancellationToken)
     {
-        if(command.Price < 0 )
-            return new PackValidationError("Pack price cannot be negetive");
+        if (command.Price < 0)
+            return new PackValidationError("Pack price cannot be negative");
 
         var newPack = new Pack
         {
@@ -28,11 +29,11 @@ public class CreatePackCommandHandler
         };
 
         var resultAddContents = await TryAddContentsToPack(command.Content, newPack, cancellationToken);
-        if(resultAddContents.IsT1)
+        if (resultAddContents.IsT1)
             return resultAddContents.AsT1;
 
         var resultLinkChildPacks = await TryLinkChildPacks(command.ChildPackIds, newPack, cancellationToken);
-        if(resultLinkChildPacks.IsT1)
+        if (resultLinkChildPacks.IsT1)
             return resultLinkChildPacks.AsT1;
 
         var addedPack = await _packRepository.AddPackAsync(newPack, cancellationToken);
@@ -59,16 +60,16 @@ public class CreatePackCommandHandler
         return new Success();
     }
 
-    private async Task<OneOf<Success, PackValidationError>> TryLinkChildPacks(IEnumerable<Guid> childPackIds , Pack newPack, CancellationToken cancellationToken)
+    private async Task<OneOf<Success, PackValidationError>> TryLinkChildPacks(IEnumerable<Guid> childPackIds, Pack newPack, CancellationToken cancellationToken)
     {
         foreach (var childPackId in childPackIds)
         {
             var childPack = await _packRepository.GetPackByIdAsync(childPackId, cancellationToken);
-            
+
             if (childPack is null)
                 return new PackValidationError($"Child pack with id {childPackId} not found");
 
-            if(childPack.ParentPack is not null)
+            if (childPack.ParentPack is not null)
                 return new PackValidationError($"Child pack with id {childPackId} already has a parent");
 
             newPack.ChildPacks.Add(childPack);

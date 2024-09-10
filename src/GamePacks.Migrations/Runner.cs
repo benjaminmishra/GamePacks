@@ -1,6 +1,7 @@
-using GamePacks.Migrations;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+namespace GamePacks.Migrations;
 
 public class Runner : IHostedService
 {
@@ -10,7 +11,7 @@ public class Runner : IHostedService
     private readonly ILogger<Runner> _logger;
 
     public Runner(
-        MigrationsExecutor migrationsExecutor, 
+        MigrationsExecutor migrationsExecutor,
         DataSeeder dataSeeder,
         IHostApplicationLifetime appLifetime,
         ILogger<Runner> logger)

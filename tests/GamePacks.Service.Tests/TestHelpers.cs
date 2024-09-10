@@ -1,4 +1,3 @@
-
 namespace GamePacks.Service.Tests;
 
 public static class TestHelpers

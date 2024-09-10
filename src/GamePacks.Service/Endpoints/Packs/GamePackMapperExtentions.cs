@@ -1,5 +1,5 @@
 using GamePacks.DataAccess.Models;
-using GamePacks.Service.Models;
+using GamePacks.Service.Models.Responses;
 
 namespace GamePacks.Service.Endpoints;
 

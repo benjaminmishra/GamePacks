@@ -1,9 +1,8 @@
 ﻿using GamePacks.DataAccess;
-using GamePacks.Service;
+using GamePacks.Migrations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using GamePacks.Migrations;
 
 var builder = Host.CreateApplicationBuilder(args);
 

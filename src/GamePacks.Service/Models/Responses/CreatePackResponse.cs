@@ -1,11 +1,11 @@
-namespace GamePacks.Service.Models;
+namespace GamePacks.Service.Models.Responses;
 
 public class CreatePackResponse
 {
-    public Guid Id {get;set;}
-    public required string PackName {get;set;}
-    public bool Active {get;set;}
-    public int Price {get;set;}
-    public IEnumerable<string> Contents {get; set;} = [];
-    public IEnumerable<Guid> ChildPackIds {get; set;} = [];
+    public Guid Id { get; set; }
+    public required string PackName { get; set; }
+    public bool Active { get; set; }
+    public int Price { get; set; }
+    public IEnumerable<string> Contents { get; set; } = [];
+    public IEnumerable<Guid> ChildPackIds { get; set; } = [];
 }

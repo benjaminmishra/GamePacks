@@ -1,8 +1,9 @@
-using Moq;
 using GamePacks.DataAccess;
 using GamePacks.DataAccess.Models;
-using GamePacks.Service.Models;
-using GamePacks.Service.UseCases;
+using GamePacks.Service.Models.Errors;
+using GamePacks.Service.Models.Requests;
+using GamePacks.Service.UseCases.Commands;
+using Moq;
 
 namespace GamePacks.Service.Tests;
 
@@ -37,7 +38,7 @@ public class CreatePackCommandHandlerUnitTests
             Name = createPackRequest.PackName,
             IsActive = createPackRequest.Active,
             Price = createPackRequest.Price,
-            PackItems = [ 
+            PackItems = [
                 new PackItem {Id = Guid.NewGuid(), Name = createPackRequest.Content.First()},
                 new PackItem {Id = Guid.NewGuid(), Name = createPackRequest.Content.TakeLast(1).Single()}
             ]
@@ -161,6 +162,6 @@ public class CreatePackCommandHandlerUnitTests
         Assert.True(result.IsT1, "Expected the result to be a PackError but got a Pack.");
         var packError = result.AsT1;
         Assert.IsType<PackValidationError>(packError);
-        Assert.Equal("Pack price cannot be negetive", packError.Message);
+        Assert.Equal("Pack price cannot be negative", packError.Message);
     }
 }

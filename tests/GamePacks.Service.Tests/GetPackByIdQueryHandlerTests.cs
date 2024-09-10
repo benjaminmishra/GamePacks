@@ -1,12 +1,12 @@
 using GamePacks.DataAccess;
 using GamePacks.DataAccess.Models;
-using GamePacks.Service.Models;
-using GamePacks.Service.UseCases;
+using GamePacks.Service.Models.Errors;
+using GamePacks.Service.UseCases.Queries;
 using Moq;
 
 namespace GamePacks.Service.Tests;
 
-[Trait("Type","Integration")]
+[Trait("Type", "Integration")]
 public class GetPackByIdQueryHandlerTests
 {
     private readonly Mock<IPackRepository> _packRepositoryMock;

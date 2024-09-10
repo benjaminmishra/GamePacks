@@ -1,7 +1,7 @@
 using GamePacks.DataAccess;
 using GamePacks.DataAccess.Models;
-using GamePacks.Service.Models;
-using GamePacks.Service.UseCases;
+using GamePacks.Service.Models.Errors;
+using GamePacks.Service.UseCases.Queries;
 using Moq;
 
 namespace GamePacks.Service.Tests;

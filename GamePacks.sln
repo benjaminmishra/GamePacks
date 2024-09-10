@@ -5,15 +5,28 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B6386483-D42B-4BC3-AD6E-47C6721F8E00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePacks.Service", "src\GamePacks.Service\GamePacks.Service.csproj", "{E167122A-642C-4675-B769-D94D60620846}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePacks.Service", "src\GamePacks.Service\GamePacks.Service.csproj", "{E167122A-642C-4675-B769-D94D60620846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePacks.Migrations", "src\GamePacks.Migrations\GamePacks.Migrations.csproj", "{E050AF00-BBE8-46F7-B1BD-2C9ECB14BCE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePacks.Migrations", "src\GamePacks.Migrations\GamePacks.Migrations.csproj", "{E050AF00-BBE8-46F7-B1BD-2C9ECB14BCE2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B294D65E-E11F-4F44-BF97-7774D14AC36E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePacks.Service.Tests", "tests\GamePacks.Service.Tests\GamePacks.Service.Tests.csproj", "{B4F94F67-CE3A-4F3F-8583-DF1A7917140A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePacks.Service.Tests", "tests\GamePacks.Service.Tests\GamePacks.Service.Tests.csproj", "{B4F94F67-CE3A-4F3F-8583-DF1A7917140A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePacks.DataAccess", "src\GamePacks.DataAccess\GamePacks.DataAccess.csproj", "{06F2A735-13D8-4ED6-A636-0D9CAF43B36C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GamePacks.DataAccess", "src\GamePacks.DataAccess\GamePacks.DataAccess.csproj", "{06F2A735-13D8-4ED6-A636-0D9CAF43B36C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54711C53-D91C-4567-AB70-80F3B0C14329}"
+	ProjectSection(SolutionItems) = preProject
+		ProblemStatement.md = ProblemStatement.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "requests", "requests", "{F6D97ED9-4913-435E-A050-1FE88A957EF1}"
+	ProjectSection(SolutionItems) = preProject
+		requests\CreateGamePacks.http = requests\CreateGamePacks.http
+		requests\GetAllGamePacks.http = requests\GetAllGamePacks.http
+		requests\GetGamePackById.http = requests\GetGamePackById.http
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,5 +59,8 @@ Global
 		{E050AF00-BBE8-46F7-B1BD-2C9ECB14BCE2} = {B6386483-D42B-4BC3-AD6E-47C6721F8E00}
 		{B4F94F67-CE3A-4F3F-8583-DF1A7917140A} = {B294D65E-E11F-4F44-BF97-7774D14AC36E}
 		{06F2A735-13D8-4ED6-A636-0D9CAF43B36C} = {B6386483-D42B-4BC3-AD6E-47C6721F8E00}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBF01222-EA63-4A08-AFB2-DEF079F81F9E}
 	EndGlobalSection
 EndGlobal

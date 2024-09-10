@@ -1,9 +1,9 @@
-using GamePacks.DataAccess.Models;
 using GamePacks.DataAccess;
+using GamePacks.DataAccess.Models;
+using GamePacks.Service.Models.Errors;
 using OneOf;
-using GamePacks.Service.Models;
 
-namespace GamePacks.Service.UseCases;
+namespace GamePacks.Service.UseCases.Queries;
 
 public class GetAllPacksQueryHandler
 {
@@ -14,12 +14,12 @@ public class GetAllPacksQueryHandler
         _packRepository = packRepository;
     }
 
-    public async Task<OneOf<IEnumerable<Pack>,PackError>> ExecuteAsync(CancellationToken cancellationToken) 
+    public async Task<OneOf<IEnumerable<Pack>, PackError>> ExecuteAsync(CancellationToken cancellationToken)
     {
         try
-        { 
+        {
             var allPacks = await _packRepository.GetAllPacksAsync(cancellationToken);
-            if(!allPacks.Any())
+            if (!allPacks.Any())
                 return new PackNotFoundError("No packs found in the database");
 
             return allPacks.ToList();

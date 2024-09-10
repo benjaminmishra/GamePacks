@@ -1,7 +1,7 @@
-using GamePacks.Service;
 using GamePacks.DataAccess;
 using GamePacks.Service.Endpoints;
-using GamePacks.Service.UseCases;
+using GamePacks.Service.UseCases.Commands;
+using GamePacks.Service.UseCases.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 

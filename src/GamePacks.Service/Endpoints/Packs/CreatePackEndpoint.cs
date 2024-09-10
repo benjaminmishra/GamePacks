@@ -1,5 +1,7 @@
-using GamePacks.Service.UseCases;
-using GamePacks.Service.Models;
+using GamePacks.Service.Models.Errors;
+using GamePacks.Service.Models.Requests;
+using GamePacks.Service.Models.Responses;
+using GamePacks.Service.UseCases.Commands;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 

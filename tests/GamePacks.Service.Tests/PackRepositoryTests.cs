@@ -7,14 +7,12 @@ namespace GamePacks.Service.Tests;
 [Trait("Type", "Integration")]
 public class PackRepositoryTests : IClassFixture<DatabaseFixture>
 {
-    private readonly DatabaseFixture _fixture;
     private readonly GamePacksDbContext _dbContext;
     private readonly IPackRepository _packRepository;
 
     public PackRepositoryTests(DatabaseFixture fixture)
     {
-        _fixture = fixture;
-        _dbContext = _fixture.GetDbContextInstance();
+        _dbContext = fixture.GetDbContextInstance();
         _packRepository = new PackRepository(_dbContext);
     }
 

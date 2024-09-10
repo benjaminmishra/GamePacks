@@ -16,7 +16,7 @@ public class DatabaseFixture : IAsyncLifetime
 
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
-    public string? ConnectionString {get; private set;}
+    public string? ConnectionString { get; private set; }
 
     public DatabaseFixture()
     {
@@ -31,7 +31,7 @@ public class DatabaseFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        // Start the PostgreSQL container, wait upto 1 min to launch the container
+        // Start the PostgreSQL container, wait up to 1 min to launch the container
         await _postgreSqlContainer.StartAsync(TestHelpers.CreateCancellationToken(60000));
         ConnectionString = _postgreSqlContainer.GetConnectionString();
 
@@ -45,11 +45,11 @@ public class DatabaseFixture : IAsyncLifetime
 
     public GamePacksDbContext GetDbContextInstance()
     {
-        if(ConnectionString is null)
+        if (ConnectionString is null)
             throw new InvalidDataException("Connection string for database not found");
 
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GamePacksDbContext>();
-        dbContextOptionsBuilder.UseNpgsql(ConnectionString,b => b.MigrationsAssembly("GamePacks.Migrations"));
+        dbContextOptionsBuilder.UseNpgsql(ConnectionString, b => b.MigrationsAssembly("GamePacks.Migrations"));
         return new GamePacksDbContext(dbContextOptionsBuilder.Options);
     }
 

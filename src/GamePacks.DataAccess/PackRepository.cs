@@ -12,15 +12,13 @@ public class PackRepository : IPackRepository
         _gamePacksDbContext = gamePacksDbContext;
     }
 
-    // Add a new Pack to the database and return the result
     public async Task<Pack> AddPackAsync(Pack newPack, CancellationToken cancellationToken)
     {
-        await _gamePacksDbContext.Packs.AddAsync(newPack,cancellationToken);
+        await _gamePacksDbContext.Packs.AddAsync(newPack, cancellationToken);
         await _gamePacksDbContext.SaveChangesAsync(cancellationToken);
         return newPack;
     }
 
-    // Get a Pack by its ID and all its related details
     public async Task<Pack?> GetPackByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _gamePacksDbContext.Packs
@@ -29,7 +27,6 @@ public class PackRepository : IPackRepository
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
-    // Get all Packs from the database
     public async Task<IEnumerable<Pack>> GetAllPacksAsync(CancellationToken cancellationToken)
     {
         return await _gamePacksDbContext.Packs.ToListAsync(cancellationToken);
