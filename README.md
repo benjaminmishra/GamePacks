@@ -35,8 +35,8 @@ There are two kinds of tests in the [test](./tests/GamePacks.Service.Tests/GameP
    dotnet test GamePacks.sln --filter "Type=Integration"
    ```
    
-1. > [!NOTE]  
-   > To run integration tests you need to have docker engine up and running (not in powersaver mode) . This is because the integration tests use [TestContainer](https://dotnet.testcontainers.org/modules/postgres/) to create and run a real database to test against. We don't need to have docker compose running. The tests manage their own containers creation startup shutdown and data population.
+> [!NOTE]  
+> To run integration tests you need to have docker engine up and running (not in powersaver mode) . This is because the integration tests use [TestContainer](https://dotnet.testcontainers.org/modules/postgres/) to create and run a real database to test against. We don't need to have docker compose running. The tests manage their own containers creation startup shutdown and data population.
 
 
 ## MIGRATIONS PROJECT
