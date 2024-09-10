@@ -1,4 +1,14 @@
 @GamePacks_Service_HostAddress = http://localhost:3000
 
-GET {{GamePacks_Service_HostAddress}}/api/v1/packs/
-Content-Type: application/json
+@Non_Exisiting_Pack_Id = 0a5024ac-503a-4d5c-a88a-a97032089ed4
+## The value for this variable needs to be replaced with an actual value the database Pack table
+@Existing_Pack_Id = f213eaf5-02e9-47ec-a876-0f5fbe79305b 
+
+
+### Get an non exisiting Pack , Not found error
+GET {{GamePacks_Service_HostAddress}}/api/v1/packs/{{Non_Exisiting_Pack_Id}}
+
+
+
+### Get an exisiting Pack , Should return all pack details
+GET {{GamePacks_Service_HostAddress}}/api/v1/packs/{{Existing_Pack_Id}}

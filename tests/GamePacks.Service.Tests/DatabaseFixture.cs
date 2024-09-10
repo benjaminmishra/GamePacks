@@ -1,3 +1,4 @@
+using DotNet.Testcontainers.Builders;
 using GamePacks.DataAccess;
 using GamePacks.Migrations;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ public class DatabaseFixture : IAsyncLifetime
     private const string DatabaseName = "testdb";
     private const string UserName = "postgres";
     private const string Password = "password";
-    private const int Port = 5432;
+    private const int Port = 5433;
 
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
@@ -24,6 +25,7 @@ public class DatabaseFixture : IAsyncLifetime
             .WithUsername(UserName)
             .WithPassword(Password)
             .WithPortBinding(Port)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(Port))
             .Build();
     }
 
@@ -34,11 +36,10 @@ public class DatabaseFixture : IAsyncLifetime
         ConnectionString = _postgreSqlContainer.GetConnectionString();
 
         // Run migrations and data seeder, give them 30 sec each
-        using var dbContext = GetDbContextInstance();
-        var executor = new MigrationsExecutor(dbContext);
-        await executor.ExecuteAsync(TestHelpers.CreateCancellationToken(30000));
+        var executor = new MigrationsExecutor(GetDbContextInstance());
+        executor.ExecuteAsync(TestHelpers.CreateCancellationToken(60000)).Wait();
 
-        var dataSeeder = new DataSeeder(dbContext);
+        var dataSeeder = new DataSeeder(GetDbContextInstance());
         await dataSeeder.RunAsync(TestHelpers.CreateCancellationToken(30000));
     }
 
@@ -48,7 +49,7 @@ public class DatabaseFixture : IAsyncLifetime
             throw new InvalidDataException("Connection string for database not found");
 
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GamePacksDbContext>();
-        dbContextOptionsBuilder.UseNpgsql(ConnectionString);
+        dbContextOptionsBuilder.UseNpgsql(ConnectionString,b => b.MigrationsAssembly("GamePacks.Migrations"));
         return new GamePacksDbContext(dbContextOptionsBuilder.Options);
     }
 

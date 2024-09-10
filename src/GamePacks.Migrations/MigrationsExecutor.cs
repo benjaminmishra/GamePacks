@@ -12,8 +12,5 @@ public sealed class MigrationsExecutor
         _gamePacksDbContext = gamePacksDbContext;
     }
 
-    public async Task ExecuteAsync(CancellationToken cancellationToken)
-    {
-        await _gamePacksDbContext.Database.MigrateAsync(cancellationToken);
-    }
+    public async Task ExecuteAsync(CancellationToken cancellationToken) => await _gamePacksDbContext.Database.MigrateAsync(cancellationToken);
 }

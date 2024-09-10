@@ -10,7 +10,7 @@ public static class GetPackByIdEndpoint
     public static void MapGetPackByIdEndpoint(this IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder
-        .MapGet("pack/{id:guid}", HandleAsync)
+        .MapGet("packs/{id:guid}", HandleAsync)
         .AllowAnonymous()
         .WithName("GetPackById")
         .WithOpenApi()
@@ -18,31 +18,31 @@ public static class GetPackByIdEndpoint
     }
 
     public static async Task<Results<Ok<GetPackByIdResponse>, ProblemHttpResult>> HandleAsync(
-        [FromRoute] Guid id, 
+        [FromRoute] Guid id,
         [FromServices] GetPackByIdQueryHandler queryHandler,
         CancellationToken cancellationToken)
     {
-        var result = await queryHandler.ExecuteAsync(id,cancellationToken);
+        var result = await queryHandler.ExecuteAsync(id, cancellationToken);
 
-       return result.Match<Results<Ok<GetPackByIdResponse>, ProblemHttpResult>>(
-            pack => 
-            {
-                var packResponse = pack.MapPackToResponse();
-                return TypedResults.Ok(packResponse);
-            },
-            error => 
-            {
+        return result.Match<Results<Ok<GetPackByIdResponse>, ProblemHttpResult>>(
+             pack =>
+             {
+                 var packResponse = pack.MapPackToResponse();
+                 return TypedResults.Ok(packResponse);
+             },
+             error =>
+             {
                  if (error is PackNotFoundError)
                      return TypedResults.Problem(
-                         detail: error.Message,
-                         statusCode: 404,
-                         title: "Not found");
+                        detail: error.Message,
+                        statusCode: 404,
+                        title: "Not found");
 
                  return TypedResults.Problem(
-                     detail: error.Message,
-                     statusCode: 500,
-                     title: "Unexpected error getting pack");
-            }
-        );
+                    detail: error.Message,
+                    statusCode: 500,
+                    title: "Unexpected error getting pack");
+             }
+         );
     }
 }

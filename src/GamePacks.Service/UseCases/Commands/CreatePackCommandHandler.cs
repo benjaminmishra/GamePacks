@@ -17,6 +17,9 @@ public class CreatePackCommandHandler
 
     public async Task<OneOf<Pack, PackError>> ExecuteAsync(CreatePackRequest command, CancellationToken cancellationToken)
     {
+        if(command.Price < 0 )
+            return new PackValidationError("Pack price cannot be negetive");
+
         var newPack = new Pack
         {
             Name = command.PackName,

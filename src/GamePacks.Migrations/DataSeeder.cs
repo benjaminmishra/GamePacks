@@ -1,7 +1,6 @@
 using GamePacks.DataAccess;
 using GamePacks.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 public class DataSeeder
 {
@@ -14,7 +13,6 @@ public class DataSeeder
 
     public async Task RunAsync(CancellationToken cancellationToken)
     {
-        // Avoid seeding duplicates
         if (await _gamePacksDbContext.Packs.AnyAsync(cancellationToken))
             return;
 
@@ -24,7 +22,7 @@ public class DataSeeder
             Name = "The Classroom Pack",
             Price = 10,
             IsActive = true,
-            ChildPacks = new List<Pack>()
+            ChildPacks = []
         };
 
         var deskPackItem = new PackItem
@@ -51,7 +49,7 @@ public class DataSeeder
             Name = "The School Pack",
             Price = 20,
             IsActive = true,
-            ChildPacks = new List<Pack> { classRoomPack }
+            ChildPacks = [classRoomPack]
         };
 
         var playgroundPackItem = new PackItem

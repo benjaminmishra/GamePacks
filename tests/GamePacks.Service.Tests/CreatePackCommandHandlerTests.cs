@@ -4,6 +4,9 @@ using GamePacks.DataAccess.Models;
 using GamePacks.Service.Models;
 using GamePacks.Service.UseCases;
 
+namespace GamePacks.Service.Tests;
+
+[Trait("Type", "Unit")]
 public class CreatePackCommandHandlerUnitTests
 {
     private readonly Mock<IPackRepository> _mockPackRepository;
@@ -33,7 +36,11 @@ public class CreatePackCommandHandlerUnitTests
             Id = Guid.NewGuid(),
             Name = createPackRequest.PackName,
             IsActive = createPackRequest.Active,
-            Price = createPackRequest.Price
+            Price = createPackRequest.Price,
+            PackItems = [ 
+                new PackItem {Id = Guid.NewGuid(), Name = createPackRequest.Content.First()},
+                new PackItem {Id = Guid.NewGuid(), Name = createPackRequest.Content.TakeLast(1).Single()}
+            ]
         };
 
         _mockPackRepository
@@ -53,14 +60,13 @@ public class CreatePackCommandHandlerUnitTests
     [Fact]
     public async Task CreatePack_ShouldReturnError_WhenDuplicateContentItemsProvided()
     {
-        // Arrange
         var createPackRequest = new CreatePackRequest
         {
             PackName = "Test Pack with Duplicates",
             Active = true,
             Price = 100,
-            Content = new List<string> { "Item 1", "Item 1" }, // Duplicate items
-            ChildPackIds = new List<Guid>()
+            Content = ["Item 1", "Item 1"],
+            ChildPackIds = []
         };
 
         _mockPackRepository
@@ -94,7 +100,7 @@ public class CreatePackCommandHandlerUnitTests
             .Setup(repo => repo.GetPackByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()));
 
         // Act
-        var result = await _commandHandler.ExecuteAsync(createPackRequest, CancellationToken.None);
+        var result = await _commandHandler.ExecuteAsync(createPackRequest, TestHelpers.CreateCancellationToken());
 
         // Assert
         Assert.True(result.IsT1, "Expected the result to be a PackError but got a Pack.");
@@ -129,12 +135,32 @@ public class CreatePackCommandHandlerUnitTests
             .ReturnsAsync(existingChildPack);
 
         // Act
-        var result = await _commandHandler.ExecuteAsync(createPackRequest, CancellationToken.None);
+        var result = await _commandHandler.ExecuteAsync(createPackRequest, TestHelpers.CreateCancellationToken());
 
         // Assert
         Assert.True(result.IsT1, "Expected the result to be a PackError but got a Pack.");
         var packError = result.AsT1;
         Assert.IsType<PackValidationError>(packError);
         Assert.Contains("already has a parent", packError.Message);
+    }
+
+    [Fact]
+    public async Task CreatePack_ShouldReturnValidationError_WhenPriceIsNegetive()
+    {
+        var createPackRequest = new CreatePackRequest
+        {
+            PackName = "Test Pack with Child",
+            Active = true,
+            Price = -150,
+            Content = ["Item 1"],
+            ChildPackIds = [Guid.NewGuid()]
+        };
+
+        var result = await _commandHandler.ExecuteAsync(createPackRequest, TestHelpers.CreateCancellationToken());
+
+        Assert.True(result.IsT1, "Expected the result to be a PackError but got a Pack.");
+        var packError = result.AsT1;
+        Assert.IsType<PackValidationError>(packError);
+        Assert.Equal("Pack price cannot be negetive", packError.Message);
     }
 }

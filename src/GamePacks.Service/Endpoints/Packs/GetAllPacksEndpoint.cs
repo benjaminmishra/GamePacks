@@ -10,7 +10,7 @@ public static class GetAllPacksEndpoint
     public static void MapGetAllPacksEndpoint(this IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder
-        .MapGet("pack", HandleAsync)
+        .MapGet("packs", HandleAsync)
         .AllowAnonymous()
         .WithName("GetAllPacks")
         .WithOpenApi()

@@ -6,5 +6,5 @@ public class PackItem
 {
     public Guid Id {get; set;}
     public required string Name {get; set;}
-    public required Pack OwnerPack {get;set;}
+    public Pack? OwnerPack {get;set;}
 }

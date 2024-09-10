@@ -1,4 +1,6 @@
 @GamePacks_Service_HostAddress = http://localhost:3000
 
+
+### Gets all pack names present in the database (pack details are not returned)
 GET {{GamePacks_Service_HostAddress}}/api/v1/packs
 Content-Type: application/json

@@ -1,12 +1,68 @@
 @GamePacks_Service_HostAddress = http://localhost:3000
+@Non_Exisitn_ChildPack = 64da11e7-5112-4d74-9088-b94e6b9da5da
+## The value for this variable needs to be replaced with an actual value the database Pack table
+@Existing_Pack_Id = f213eaf5-02e9-47ec-a876-0f5fbe79305b 
 
+### Create First Pack
 POST {{GamePacks_Service_HostAddress}}/api/v1/packs
 Content-Type: application/json
 
 {
-  "packName": "The School Pack",
+  "packName": "The Pool Party Pack",
   "active": true,
   "price": 10,
-  "content": ["furniture.whiteboard"],
+  "content": ["Lounge Chair", "Swin Suit", "Orange Drink", "Umbrella"],
+  "childPackIds": []
+}
+
+
+### Create Pack inactive pack, should return bad request
+POST {{GamePacks_Service_HostAddress}}/api/v1/packs
+Content-Type: application/json
+
+{
+  "packName": "The New Pack",
+  "active": false,
+  "price": 150,
+  "content": [],
+  "childPackIds": []
+}
+
+
+### Try to Create Second Pack with non existing child pack id
+POST {{GamePacks_Service_HostAddress}}/api/v1/packs
+Content-Type: application/json
+
+{
+  "packName": "The Ship Pack",
+  "active": true,
+  "price": 10,
+  "content": [],
+  "childPackIds": ["{{Non_Exisitn_ChildPack}}"]
+}
+
+
+### Try to Create Pack with invalid pack name, should return bad request
+POST {{GamePacks_Service_HostAddress}}/api/v1/packs
+Content-Type: application/json
+
+{
+  "packName": "",
+  "active": true,
+  "price": 10,
+  "content": [],
+  "childPackIds": ["{{Non_Exisitn_ChildPack}}"]
+}
+
+
+### Try to Create Pack with negetive price, should return bad request
+POST {{GamePacks_Service_HostAddress}}/api/v1/packs
+Content-Type: application/json
+
+{
+  "packName": "The New Pack",
+  "active": true,
+  "price": -10,
+  "content": [],
   "childPackIds": []
 }

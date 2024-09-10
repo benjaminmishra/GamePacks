@@ -10,7 +10,7 @@ public static class CreatePackEndpoint
     public static void MapCreatePackEndpoint(this IEndpointRouteBuilder routeBuilder)
     {
         routeBuilder
-        .MapPost("pack", HandleAsync)
+        .MapPost("packs", HandleAsync)
         .AllowAnonymous()
         .WithName("CreatePack")
         .WithOpenApi()

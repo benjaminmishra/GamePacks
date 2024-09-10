@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GamePacks.Service.Tests;
 
-public class PackRepositoryTests : IClassFixture<DatabaseFixture>, IDisposable
+[Trait("Type", "Integration")]
+public class PackRepositoryTests : IClassFixture<DatabaseFixture>
 {
     private readonly DatabaseFixture _fixture;
     private readonly GamePacksDbContext _dbContext;
-
     private readonly IPackRepository _packRepository;
 
     public PackRepositoryTests(DatabaseFixture fixture)
@@ -44,10 +44,8 @@ public class PackRepositoryTests : IClassFixture<DatabaseFixture>, IDisposable
     {
         var packId = (await _dbContext.Packs.FirstAsync()).Id;
 
-        // Act
         var retrievedPack = await _packRepository.GetPackByIdAsync(packId, TestHelpers.CreateCancellationToken());
 
-        // Assert
         Assert.NotNull(retrievedPack);
         Assert.NotEmpty(retrievedPack.PackItems);
     }
@@ -55,10 +53,8 @@ public class PackRepositoryTests : IClassFixture<DatabaseFixture>, IDisposable
     [Fact]
     public async Task GetAllPacksAsync_ShouldReturnAllPacks()
     {
-        // Act
         var packs = await _packRepository.GetAllPacksAsync(TestHelpers.CreateCancellationToken());
 
-        // Assert
         Assert.NotNull(packs);
         Assert.True(packs.Any());
     }
@@ -66,25 +62,16 @@ public class PackRepositoryTests : IClassFixture<DatabaseFixture>, IDisposable
     [Fact]
     public async Task PackItemExistsByNameAsync_ShouldReturnTrue_WhenItemExists()
     {
-        // Act
         var exists = await _packRepository.PackItemExistsByNameAsync("The Desk", TestHelpers.CreateCancellationToken());
 
-        // Assert
         Assert.True(exists);
     }
 
     [Fact]
     public async Task PackItemExistsByNameAsync_ShouldReturnFalse_WhenItemDoesNotExist()
     {
-        // Act
         var exists = await _packRepository.PackItemExistsByNameAsync("Non-existing Item", TestHelpers.CreateCancellationToken());
 
-        // Assert
         Assert.False(exists);
-    }
-
-    public void Dispose()
-    {
-        _dbContext.Dispose();
     }
 }
