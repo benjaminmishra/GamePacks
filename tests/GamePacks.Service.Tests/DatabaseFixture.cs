@@ -12,7 +12,8 @@ public class DatabaseFixture : IAsyncLifetime
     private const string DatabaseName = "testdb";
     private const string UserName = "postgres";
     private const string Password = "password";
-    private const int Port = 5433;
+    private const int HostPort = 5433;
+    private const int PostgresContainerPort = 5432;
 
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
@@ -24,8 +25,8 @@ public class DatabaseFixture : IAsyncLifetime
             .WithDatabase(DatabaseName)
             .WithUsername(UserName)
             .WithPassword(Password)
-            .WithPortBinding(Port)
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(Port))
+            .WithPortBinding(HostPort, PostgresContainerPort)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(PostgresContainerPort))
             .Build();
     }
 
