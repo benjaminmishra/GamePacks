@@ -8,7 +8,5 @@ Content-Type: application/json
   "active": true,
   "price": 10,
   "content": ["furniture.whiteboard"],
-  "childPackIds": ["pack.classroom", "pack.playground"]
+  "childPackIds": []
 }
-
-###

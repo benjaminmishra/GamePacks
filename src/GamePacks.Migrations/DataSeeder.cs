@@ -6,29 +6,22 @@ using Microsoft.Extensions.Logging;
 public class DataSeeder
 {
     private readonly GamePacksDbContext _gamePacksDbContext;
-    private readonly ILogger<DataSeeder> _logger;
 
-    public DataSeeder(GamePacksDbContext gamePacksDbContext, ILogger<DataSeeder> logger)
+    public DataSeeder(GamePacksDbContext gamePacksDbContext)
     {
         _gamePacksDbContext = gamePacksDbContext;
-        _logger = logger;
     }
 
     public async Task RunAsync(CancellationToken cancellationToken)
     {
         // Avoid seeding duplicates
         if (await _gamePacksDbContext.Packs.AnyAsync(cancellationToken))
-        {
-            _logger.LogInformation("Data seeding skipped, packs already exist.");
             return;
-        }
 
         // Classroom Pack
         var classRoomPack = new Pack
         {
-            Id = Guid.NewGuid(),
             Name = "The Classroom Pack",
-            ShortName = "pack.classroom",
             Price = 10,
             IsActive = true,
             ChildPacks = new List<Pack>()
@@ -36,24 +29,18 @@ public class DataSeeder
 
         var deskPackItem = new PackItem
         {
-            Id = Guid.NewGuid(),
-            Category = "classroom",
             Name = "The Desk",
             OwnerPack = classRoomPack
         };
 
         var chairPackItem = new PackItem
         {
-            Id = Guid.NewGuid(),
-            Category = "classroom",
             Name = "The Chair",
             OwnerPack = classRoomPack
         };
 
         var boardPackItem = new PackItem
         {
-            Id = Guid.NewGuid(),
-            Category = "classroom",
             Name = "The Blackboard",
             OwnerPack = classRoomPack
         };
@@ -61,9 +48,7 @@ public class DataSeeder
         // School Pack (Parent pack of Classroom Pack)
         var schoolPack = new Pack
         {
-            Id = Guid.NewGuid(),
             Name = "The School Pack",
-            ShortName = "pack.school",
             Price = 20,
             IsActive = true,
             ChildPacks = new List<Pack> { classRoomPack }
@@ -71,16 +56,12 @@ public class DataSeeder
 
         var playgroundPackItem = new PackItem
         {
-            Id = Guid.NewGuid(),
-            Category = "school",
             Name = "The Playground",
             OwnerPack = schoolPack
         };
 
         var libraryPackItem = new PackItem
         {
-            Id = Guid.NewGuid(),
-            Category = "school",
             Name = "The Library",
             OwnerPack = schoolPack
         };

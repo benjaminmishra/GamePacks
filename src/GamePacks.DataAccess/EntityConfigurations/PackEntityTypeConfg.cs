@@ -17,8 +17,6 @@ public class PackEntityTypeConfiguration : IEntityTypeConfiguration<Pack>
 
         builder.Property(x => x.Name).IsRequired();
 
-        builder.Property(x => x.ShortName).IsRequired();
-
         builder.Property(x => x.IsActive)
         .IsRequired()
         .HasDefaultValue(false);

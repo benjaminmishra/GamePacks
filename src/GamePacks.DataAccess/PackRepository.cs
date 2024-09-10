@@ -13,25 +13,32 @@ public class PackRepository : IPackRepository
     }
 
     // Add a new Pack to the database and return the result
-    public async Task<Pack> AddPackAsync(Pack newPack)
+    public async Task<Pack> AddPackAsync(Pack newPack, CancellationToken cancellationToken)
     {
-        await _gamePacksDbContext.Packs.AddAsync(newPack);
-        await _gamePacksDbContext.SaveChangesAsync();
+        await _gamePacksDbContext.Packs.AddAsync(newPack,cancellationToken);
+        await _gamePacksDbContext.SaveChangesAsync(cancellationToken);
         return newPack;
     }
 
     // Get a Pack by its ID and all its related details
-    public async Task<Pack?> GetPackByIdAsync(Guid id)
+    public async Task<Pack?> GetPackByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _gamePacksDbContext.Packs
             .Include(p => p.PackItems)
             .Include(p => p.ChildPacks)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
     // Get all Packs from the database
-    public async Task<IEnumerable<Pack>> GetAllPacksAsync()
+    public async Task<IEnumerable<Pack>> GetAllPacksAsync(CancellationToken cancellationToken)
     {
-        return await _gamePacksDbContext.Packs.ToListAsync();
+        return await _gamePacksDbContext.Packs.ToListAsync(cancellationToken);
+    }
+
+    public async Task<bool> PackItemExistsByNameAsync(string name, CancellationToken cancellationToken)
+    {
+        return await _gamePacksDbContext
+        .PackItems
+        .AnyAsync(p => p.Name.ToLower() == name.ToLower(), cancellationToken);
     }
 }

@@ -1,7 +1,7 @@
 using GamePacks.DataAccess.Models;
 using GamePacks.DataAccess;
 using OneOf;
-using OneOf.Types;
+using GamePacks.Service.Models;
 
 namespace GamePacks.Service.UseCases;
 
@@ -14,19 +14,19 @@ public class GetPackByIdQueryHandler
         _packRepository = packRepository;
     }
 
-    public async Task<OneOf<Pack,Error>> ExecuteAsync(Guid packId) 
+    public async Task<OneOf<Pack,PackError>> ExecuteAsync(Guid packId, CancellationToken cancellationToken) 
     {
         try
         { 
-            var pack = await _packRepository.GetPackByIdAsync(packId);
+            var pack = await _packRepository.GetPackByIdAsync(packId, cancellationToken);
             if(pack is null)
-                return new Error();
+                return new PackNotFoundError($"Pack with id {packId} not found");
 
             return pack;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return new Error();
+            return new PackExceptionError(ex);
         }
     }
 }

@@ -18,9 +18,10 @@ public static class GetAllPacksEndpoint
     }
 
     public static async Task<Results<Ok<GetAllPacksResponse>, ProblemHttpResult>> HandleAsync(
-        [FromServices] GetAllPacksQueryHandler queryHandler)
+        [FromServices] GetAllPacksQueryHandler queryHandler,
+        CancellationToken cancellationToken)
     {
-        var result = await queryHandler.ExecuteAsync();
+        var result = await queryHandler.ExecuteAsync(cancellationToken);
 
         return result.Match<Results<Ok<GetAllPacksResponse>, ProblemHttpResult>>(
              packs =>
@@ -32,12 +33,10 @@ public static class GetAllPacksEndpoint
              error =>
              {
                  if (error is PackNotFoundError)
-                 {
                      return TypedResults.Problem(
                          detail: error.Message,
                          statusCode: 404,
                          title: "No packs found");
-                 }
 
                  return TypedResults.Problem(
                      detail: error.Message,

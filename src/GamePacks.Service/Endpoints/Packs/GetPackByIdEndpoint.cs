@@ -19,31 +19,29 @@ public static class GetPackByIdEndpoint
 
     public static async Task<Results<Ok<GetPackByIdResponse>, ProblemHttpResult>> HandleAsync(
         [FromRoute] Guid id, 
-        [FromServices] GetPackByIdQueryHandler queryHandler)
+        [FromServices] GetPackByIdQueryHandler queryHandler,
+        CancellationToken cancellationToken)
     {
-        var result = await queryHandler.ExecuteAsync(id);
+        var result = await queryHandler.ExecuteAsync(id,cancellationToken);
 
        return result.Match<Results<Ok<GetPackByIdResponse>, ProblemHttpResult>>(
             pack => 
             {
-                var packResponse = new GetPackByIdResponse() 
-                {
-                    Id = pack.Id,
-                    PackName = pack.Name,
-                    Active = pack.IsActive,
-                    Price = pack.Price,
-                    Content = pack.PackItems?.Select(x=>x.Name) ?? [],
-                    ChildPackIds = pack.ChildPacks.Select(x => x.Name)
-                };
-
+                var packResponse = pack.MapPackToResponse();
                 return TypedResults.Ok(packResponse);
             },
             error => 
             {
-                return TypedResults.Problem(
-                    detail: error.ToString(),
-                    statusCode: 500, 
-                    title: "Unexpected error getting pack");
+                 if (error is PackNotFoundError)
+                     return TypedResults.Problem(
+                         detail: error.Message,
+                         statusCode: 404,
+                         title: "Not found");
+
+                 return TypedResults.Problem(
+                     detail: error.Message,
+                     statusCode: 500,
+                     title: "Unexpected error getting pack");
             }
         );
     }

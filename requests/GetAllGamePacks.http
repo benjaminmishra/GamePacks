@@ -1,0 +1,4 @@
+@GamePacks_Service_HostAddress = http://localhost:3000
+
+GET {{GamePacks_Service_HostAddress}}/api/v1/packs
+Content-Type: application/json

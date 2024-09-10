@@ -4,9 +4,11 @@ namespace GamePacks.DataAccess;
 
 public interface IPackRepository
 {
-    Task<Pack> AddPackAsync(Pack newPack);
+    Task<Pack> AddPackAsync(Pack newPack, CancellationToken cancellationToken);
 
-    Task<Pack?> GetPackByIdAsync(Guid id);
+    Task<Pack?> GetPackByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<IEnumerable<Pack>> GetAllPacksAsync();
+    Task<IEnumerable<Pack>> GetAllPacksAsync(CancellationToken cancellationToken);
+
+    Task<bool> PackItemExistsByNameAsync(string name, CancellationToken cancellationToken);
 }
