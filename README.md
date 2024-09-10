@@ -9,7 +9,8 @@ docker compose up
 ```
 This should be enough to start the whole project and its dependencies. The Open Api documentation should be avaiable on [http://localhost:3000/swagger](http://localhost:3000/swagger).
 
-NOTE : The only pre-requisite here is to have docker engine up and running.
+> [!IMPORTANT]  
+> The only pre-requisite here is to have docker engine up and running.
 
 
 ## USAGE INSTRUCTIONS
@@ -22,7 +23,7 @@ NOTE : The only pre-requisite here is to have docker engine up and running.
 
 There are two kinds of tests in the [test](./tests/GamePacks.Service.Tests/GamePacks.Service.Tests.csproj) project.
 
-1. ### Unit test - 
+1. ### Unit test 
    To run unit tests you can either use a IDE or you an run the following command in the [project root directory](./)
    ```bash
    dotnet test GamePacks.sln --filter "Type=Unit"    
@@ -34,7 +35,8 @@ There are two kinds of tests in the [test](./tests/GamePacks.Service.Tests/GameP
    dotnet test GamePacks.sln --filter "Type=Integration"
    ```
    
-   NOTE: To run integration tests you need to have docker engine up and running (not in powersaver mode) . This is because the integration tests use [TestContainer](https://dotnet.testcontainers.org/modules/postgres/) to create and run a real database to test against. We don't need to have docker compose running. The tests manage their own containers creation startup shutdown and data population.
+1. > [!NOTE]  
+   > To run integration tests you need to have docker engine up and running (not in powersaver mode) . This is because the integration tests use [TestContainer](https://dotnet.testcontainers.org/modules/postgres/) to create and run a real database to test against. We don't need to have docker compose running. The tests manage their own containers creation startup shutdown and data population.
 
 
 ## MIGRATIONS PROJECT
